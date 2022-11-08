@@ -1,4 +1,4 @@
-main: main.o
-	gcc -ansi -Wall -pedantic main.o -o main
-main.o: main.c main.h
-	gcc -c -ansi -Wall -pedantic main.c -o main.o
+abc: abc.o
+	gcc -ansi -Wall -pedantic abc.o -o abc
+abc.o: abc.c abc.h
+	gcc -c -ansi -Wall -pedantic abc.c
