@@ -4,7 +4,7 @@ I assume the string's length is <=80
 
 #include "abc.h"
 
-void abc(char str[]) {
+void abc(char* str) {
 
     int i, hyphenInd, flag=0; /*hyphenInd: index for hyphen. flag: counter for consecutive following letters */
     char tempStr[MAXLENGTH]; /* a temporary string for manipulation purposes */
