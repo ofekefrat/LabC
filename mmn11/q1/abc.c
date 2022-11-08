@@ -36,9 +36,10 @@ int main() {
 
     char test[MAXLENGTH] = "dabcefLMNOpQrstuv567ab";
     char input[MAXLENGTH];
+    int r;
 
     printf("Please enter a string literal: \n");
-    gets(input);
+    scanf("%79s", input);
     printf("You entered: %s\n", input);
     abc(input);
     printf("Result: %s\n", input);
