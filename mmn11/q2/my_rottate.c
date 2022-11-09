@@ -1,7 +1,7 @@
 
 #include "my_rottate.h"
 
-double size = sizeof(unsigned int)*8 - 1;
+int size = sizeof(unsigned int)*8 - 1;
 
 unsigned int my_rottate(unsigned int a, int b) {
 
@@ -31,6 +31,7 @@ int main() {
     unsigned int num;
     int distance;
     int i=0;
+    double t;
 
     printf("Please enter a non-negative number: \n");
     if ((scanf("%u", &num)) == 1) {
@@ -46,7 +47,7 @@ int main() {
             while (num>=0 && i<=size) {
                 if (!(i%8))
                     printf(" ");
-                double t = pow(2, size-i);
+                t = pow(2, size-i);
                 printf("%d", (num >= t));
                 if (num >= t)
                     num -= (int)t;
