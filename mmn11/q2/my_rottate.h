@@ -6,4 +6,5 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#define SIZE sizeof(unsigned int)*8 - 1
 

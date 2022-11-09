@@ -1,8 +1,6 @@
 
 #include "my_rottate.h"
 
-int size = sizeof(unsigned int)*8 - 1;
-
 unsigned int my_rottate(unsigned int a, int b) {
 
     while (b != 0) {
@@ -10,12 +8,12 @@ unsigned int my_rottate(unsigned int a, int b) {
             unsigned int temp = a%2;
             a = a>>1;
             if (temp)
-                a += (unsigned int)pow(2, size);
+                a += (unsigned int)pow(2, SIZE);
             b--;
         }
 
         if (b<0) {
-            int temp = (a >= (unsigned int)pow(2, size));
+            int temp = (a >= (unsigned int)pow(2, SIZE));
             a = a<<1;
             if (temp)
                 a++;
@@ -44,10 +42,10 @@ int main() {
                    "Octal: %o\n"
                    "Hexadecimal: %x\n"
                    "Binary:", num, num, num);
-            while (num>=0 && i<=size) {
+            while (num>=0 && i <= SIZE) {
                 if (!(i%8))
                     printf(" ");
-                t = pow(2, size-i);
+                t = pow(2, SIZE - i);
                 printf("%d", (num >= t));
                 if (num >= t)
                     num -= (int)t;
