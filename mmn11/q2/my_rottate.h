@@ -1,8 +1,9 @@
 /*
-Created by ofek on 02/11/2022.
+ Created by ofeke on 09/11/2022.
 */
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#define MAXLENGTH 81
+#include <math.h>
+

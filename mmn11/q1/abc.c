@@ -38,10 +38,11 @@ int main() {
     char input[MAXLENGTH];
 
     printf("Please enter a string literal: \n");
-    scanf("%79s", input);
-    printf("You entered: %s\n", input);
-    abc(input);
-    printf("Result: %s\n", input);
+    if (scanf("%80s", input)) {
+        printf("You entered: %s\n", input);
+        abc(input);
+        printf("Result: %s\n", input);
+    }
 
     return 0;
 }
