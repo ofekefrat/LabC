@@ -53,6 +53,7 @@ int main() {
                     num -= (int)t;
                 i++;
             }
+            printf("\n");
         }
     }
 
