@@ -42,7 +42,7 @@ int main() {
                    "Octal: %o\n"
                    "Hexadecimal: %x\n"
                    "Binary:", num, num, num);
-            while (num>=0 && i <= SIZE) {
+            while (i <= SIZE) {
                 if (!(i%8))
                     printf(" ");
                 t = pow(2, SIZE - i);
