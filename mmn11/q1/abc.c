@@ -4,6 +4,22 @@ I assume the string's length is <=80
 
 #include "abc.h"
 
+void abc(char*);
+
+int main() {
+
+    char input[MAXLENGTH];
+
+    printf("Please enter a string literal: \n");
+    if (scanf("%80s", input)) {
+        printf("You entered: %s\n", input);
+        abc(input);
+        printf("Result: %s\n", input);
+    }
+
+    return 0;
+}
+
 void abc(char* str) {
 
     int i, hyphenInd, flag=0; /*hyphenInd: index for hyphen. flag: counter for consecutive following letters */
@@ -30,20 +46,5 @@ void abc(char* str) {
                 flag = 0;
         }
     }
-}
-
-int main() {
-
-    char test[MAXLENGTH] = "dabcefLMNOpQrstuv567ab";
-    char input[MAXLENGTH];
-
-    printf("Please enter a string literal: \n");
-    if (scanf("%80s", input)) {
-        printf("You entered: %s\n", input);
-        abc(input);
-        printf("Result: %s\n", input);
-    }
-
-    return 0;
 }
 
