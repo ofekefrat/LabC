@@ -26,7 +26,7 @@ void abc(char* str) {
     char tempStr[MAXLENGTH]; /* a temporary string for manipulation purposes */
 
     for (i=1; i < strlen(str); i++) {
-        if (flag==0 && isalpha(str[i])) { /**/
+        if (flag==0 && isalpha(str[i])) {
             if (str[i] == str[i-1]+1) {
                 hyphenInd = i;
                 flag = 1;
