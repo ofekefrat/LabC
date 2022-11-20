@@ -15,8 +15,8 @@ void display(unsigned int);
 
 int main() {
 
-    unsigned int num;
-    int distance;
+    unsigned int num; /*the number*/
+    int distance; /*the distance for the number to be moved*/
 
     printf("Please enter a non-negative number: \n");
     scanf("%u", &num);
@@ -31,7 +31,7 @@ int main() {
     return 0;
 }
 
-unsigned int my_rottate(unsigned int a, int b) {
+unsigned int my_rottate(unsigned int a, int b) { /*rotating the bits as described at the top*/
 
     if (b<0) {
         b = -b; /* changing the distance value to its absolute value, to make the shifts correctly */
@@ -40,7 +40,7 @@ unsigned int my_rottate(unsigned int a, int b) {
     return (a>>b | a << (int_len()-b));
 }
 
-void display(unsigned int num) {
+void display(unsigned int num) { /*display the number in all required formats*/
 
     int i=0;
 

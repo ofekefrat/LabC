@@ -12,7 +12,7 @@ void abc(char*);
 
 int main() {
 
-    char input[MAXLENGTH];
+    char input[MAXLENGTH]; /*The inputted string*/
 
     printf("Please enter a string: \n");
     (scanf("%80s", input));
@@ -23,7 +23,7 @@ int main() {
     return 0;
 }
 
-void abc(char* str) {
+void abc(char* str) { /*shortens the string as described at the top*/
 
     int i, hyphenInd, flag=0; /*hyphenInd: index for hyphen. flag: counter for consecutive following letters */
     char tempStr[MAXLENGTH]; /* a temporary string for manipulation purposes */
@@ -39,7 +39,7 @@ void abc(char* str) {
             if (str[i] == str[i-1]+1) {
                 if (i == strlen(str)-1 || str[i+1] != str[i]+1) {
                     strcpy(tempStr, str + i);/*using tempStr to keep the rest of the string*/
-                    str[hyphenInd] = '\0';
+                    str[hyphenInd] = '\0';/*cutting the string from the index to the end*/
                     strcat(str, "-"); /*adding the hyphen*/
                     strcat(str, tempStr); /*adding the rest of the string back*/
                     flag = 0;
