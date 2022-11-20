@@ -3,7 +3,7 @@
  and shortens the string by replacing each sequence with its first letter, a hyphen, and then the last letter.
  The program also prints the inputted string before the changes and after.
 
- Assumptions: I assume the string's length is <=80, and that spaces will not b
+ Assumptions: the string's length is <= 80
 */
 
 #include "abc.h"

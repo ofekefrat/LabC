@@ -1,3 +1,11 @@
+/*
+ This program rotates the bits of a positive number, to the right if the distance is positive,
+ and to the left if it's negative. both the number and rotation distance are inputted through stdin.
+ The program also prints the values of the number before and after the change,
+ in decimal, octal, hexadecimal, and binary (base-2).
+
+ Assumptions: number is non-negative.
+*/
 
 #include "my_rottate.h"
 
