@@ -1,6 +1,6 @@
-//
-// Created by ofeke on 29/11/2022.
-//
+/*
+ *
+ * */
 
 #include <stdio.h>
 #include <string.h>
@@ -32,6 +32,8 @@ int main() {
     inputCheck(input, b1, b2, len);
 
     printf("The value returned from test: %d", my_bcmp(&input[b1], &input[b2], len));
+
+    return 0;
 }
 
 void inputCheck(char* str, int b1, int b2, int len) {
@@ -60,7 +62,7 @@ int getNumberFromStdin() {
     char* trash;
     int i;
 
-    if (fgets(str, INT_MAX_LENGTH, stdin) == NULL) { // QUESTIONABLE!!!!!!!
+    if (fgets(str, INT_MAX_LENGTH, stdin) == NULL) {
         printf("Error handling input\n");
         exit(0);
     }

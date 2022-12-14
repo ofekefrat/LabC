@@ -1,6 +1,6 @@
-//
-// Created by ofeke on 29/11/2022.
-//
+/*
+ *
+ */
 
 #ifndef my_bcmp_h
 #define my_bcmp_h
@@ -13,4 +13,4 @@ int my_bcmp(const void*,const void*,int);
 int getNumberFromStdin(void);
 void inputCheck(char*,int,int,int);
 
-#endif //my_bcmp_h
+#endif /*my_bcmp_h*/
