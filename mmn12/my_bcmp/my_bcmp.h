@@ -11,7 +11,7 @@
 int my_bcmp(const void*,const void*,int); /*compares bytes against each other (according to input
                                             * values requested by program)
                                             * if all corresponding bytes are equal, prints 0. if attempting to
-                                            * compare 0 bytes, or if indexes are empty, prints 0 as well.
+                                            * compare 0 bytes, prints 0 as well.
                                             * otherwise, prints -1.*/
 
 

@@ -2,7 +2,7 @@
  * This program compares a given amount of bytes (len) against each other, starting from two given indexes,
  * in a given string, all provided by the user. Indexes must be within range of the string, and the len must not
  * lead the program out of the string's bounds (from either of the indexes). If the value in all corresponding bytes
- * is equal, the program prints 0, otherwise -1. if len is 0 or both indexes are without value, the program returns 0.
+ * is equal, the program prints 0, otherwise -1. if len is 0, the program returns 0.
  * Assumption: Maximum length of string input is 512.
  */
 
@@ -76,6 +76,11 @@ int getNumberFromStdin() { /* Receiving an integer (and only an integer) from th
         exit(0);
     }
 
+    if (strlen(str) == 0) {
+        printf("ERROR: No number has been entered\n");
+        exit(0);
+    }
+
     for (i=0; i<strlen(str)-1; i++) {
         if (!isdigit(str[i])) { /* Checking if all characters from input are digits, otherwise it's not a
                                     * (non-negative) integer */
@@ -100,8 +105,7 @@ int my_bcmp(const void* b1, const void* b2, int len) { /* the required test */
     size_t b1_size = strlen(pb1); /* length of string from each index */
     size_t b2_size = strlen(pb2);
 
-    if ( (b1_size == 0 && b2_size == 0) /* if both "strings" (from indexes) are empty, they are equal */
-        || len == 0) /* if we check 0 items, they are equal by default */
+    if (len == 0) /* if we check 0 items, they are equal by default */
         return POSITIVE_RESULT;
 
     for (i=0; i < b1_size && i < b2_size && i < len; i++) {
