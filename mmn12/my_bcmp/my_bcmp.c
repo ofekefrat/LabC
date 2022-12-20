@@ -77,14 +77,15 @@ int getNumberFromStdin() { /* Receiving an integer (and only an integer) from th
     }
 
     for (i=0; i<strlen(str)-1; i++) {
-        if (!isdigit(str[i])) { /* Checking if all characters from input are digits, otherwise it's not a (non-negative) integer */
+        if (!isdigit(str[i])) { /* Checking if all characters from input are digits, otherwise it's not a
+                                    * (non-negative) integer */
             printf("ERROR: Not a non-negative decimal integer\n");
             exit(0);
         }
     }
 
     if (strlen(str) > MAX_ACCEPTABLE_CHARACTERS) {
-        printf("ERROR: Too many characters, program will exceed assumed bounds (512)\n");
+        printf("ERROR: Number is too long, program will exceed assumed maximal bounds (512)\n");
         exit(0);
     }
 
