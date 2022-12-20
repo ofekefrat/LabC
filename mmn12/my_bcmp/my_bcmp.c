@@ -29,10 +29,10 @@ int main() {
     printf("Please enter the string\n");
     fgets(input, STR_MAX_LENGTH, stdin);
 
-    printf("Len: %d", len);
-    printf("Index #1: %d", ind1);
-    printf("Index #2: %d", ind2);
-    printf("String entered: %s", input);
+    printf("Len: %d\n", len);
+    printf("Index #1: %d\n", ind1);
+    printf("Index #2: %d\n", ind2);
+    printf("String entered: %s\n", input);
 
     inputCheck(input, ind1, ind2, len);
 
