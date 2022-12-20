@@ -76,7 +76,7 @@ int getNumberFromStdin() { /* Receiving an integer (and only an integer) from th
         exit(0);
     }
 
-    if (strlen(str) == 0) {
+    if (strlen(str) == 1) {
         printf("ERROR: No number has been entered\n");
         exit(0);
     }
