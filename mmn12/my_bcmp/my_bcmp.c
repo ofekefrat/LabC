@@ -36,7 +36,7 @@ int main() {
 
     inputCheck(input, ind1, ind2, len);
 
-    printf("The value returned from test: %d", my_bcmp(&input[ind1], &input[ind2], len)); /* printing the result */
+    printf("Test result: %d\n", my_bcmp(&input[ind1], &input[ind2], len)); /* printing the result */
 
     return 0;
 }
