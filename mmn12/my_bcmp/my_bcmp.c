@@ -1,6 +1,10 @@
 /*
- *
- * */
+ * This program compares a given amount of bytes (len) against each other, starting from two given indexes,
+ * in a given string, all provided by the user. Indexes must be within range of the string, and the len must not
+ * lead the program out of the string's bounds (from either of the indexes). If the value in all corresponding bytes
+ * is equal, the program prints 0, otherwise -1. if len is 0 or both indexes are without value, the program returns 0.
+ * Assumption: Maximum length of string input is 512.
+ */
 
 #include <stdio.h>
 #include <string.h>
@@ -11,55 +15,60 @@
 int main() {
 
     char input[STR_MAX_LENGTH]; /* string from user */
-    int b1, b2, len; /* b1,b2: indexes from user. len: length to be tested (from user)*/
+    int ind1, ind2, len; /* ind1,ind2: indexes from user. len: number of bytes to be tested (from user)*/
 
-    printf("Please enter len\n");
+    printf("Please enter number of bytes to test\n");
     len = getNumberFromStdin();
-    printf("Len: %d", len);
 
     printf("Please enter index #1\n");
-    b1 = getNumberFromStdin();
-    printf("Index #1: %d", b1);
+    ind1 = getNumberFromStdin();
 
     printf("Please enter index #2\n");
-    b2 = getNumberFromStdin();
-    printf("Index #2: %d", b2);
+    ind2 = getNumberFromStdin();
 
-    printf("Please enter a string\n");
+    printf("Please enter the string\n");
     fgets(input, STR_MAX_LENGTH, stdin);
+
+    printf("Len: %d", len);
+    printf("Index #1: %d", ind1);
+    printf("Index #2: %d", ind2);
     printf("String entered: %s", input);
 
-    inputCheck(input, b1, b2, len);
+    inputCheck(input, ind1, ind2, len);
 
-    printf("The value returned from test: %d", my_bcmp(&input[b1], &input[b2], len));
+    printf("The value returned from test: %d", my_bcmp(&input[ind1], &input[ind2], len)); /* printing the result */
 
     return 0;
 }
 
 void inputCheck(char* str, int b1, int b2, int len) { /* Checking if all the required input is valid */
 
-    if (b1 > strlen(str)) {
+    if (b1 >= strlen(str)) {
         printf("ERROR: First index is out of string's bounds\n");
         exit(0);
     }
-    if (b2 > strlen(str)) {
+    if (b2 >= strlen(str)) {
         printf("ERROR: Second index is out of string's bounds\n");
         exit(0);
     }
-    if (len + b1 > strlen(str)) {
+    if (len > strlen(str)) {
+        printf("ERROR: Number of bytes to compare is greater than string's length\n");
+        exit(0);
+    }
+    if (len + b1 >= strlen(str)) {
         printf("ERROR: Program will go out of string's bounds from first index\n");
         exit(0);
     }
-    if (len + b2 > strlen(str)) {
+    if (len + b2 >= strlen(str)) {
         printf("ERROR: Program will go out of string's bounds from second index\n");
         exit(0);
     }
 }
 
-int getNumberFromStdin() { /* Receiving an integer (and only an integer) from the user */
+int getNumberFromStdin() { /* Receiving an integer (and only an integer) from the user and returning it as an int */
 
     char str[INT_MAX_LENGTH]; /* char array to test if everything will be read correctly */
-    char* trash; /* pointer to dump unnecessary value from strtol*/
+    char* trash; /* pointer to dump unnecessary value from strtol */
     int i;
 
     if (fgets(str, INT_MAX_LENGTH, stdin) == NULL) { /* Checking if input was received successfully */
@@ -74,10 +83,10 @@ int getNumberFromStdin() { /* Receiving an integer (and only an integer) from th
         }
     }
 
-    return strtol(str, &trash, DECIMAL_BASE);
+    return strtol(str, &trash, DECIMAL_BASE); /* converting the string to an integer in base 10 and returning it */
 }
 
-int my_bcmp(const void* b1, const void* b2, int len) { /* the required test*/
+int my_bcmp(const void* b1, const void* b2, int len) { /* the required test */
 
     int i;
     const char* pb1 = b1; /* type casting to access the values of items in array */
@@ -87,11 +96,11 @@ int my_bcmp(const void* b1, const void* b2, int len) { /* the required test*/
 
     if ( (b1_size == 0 && b2_size == 0) /* if both "strings" (from indexes) are empty, they are equal */
         || len == 0) /* if we check 0 items, they are equal by default */
-        return 0;
+        return POSITIVE_RESULT;
 
     for (i=0; i < b1_size && i < b2_size && i < len; i++) {
         if (pb1[i] != pb2[i])
-            return -1;
+            return NEGATIVE_RESULT;
     }
-    return 0;
+    return POSITIVE_RESULT;
 }
