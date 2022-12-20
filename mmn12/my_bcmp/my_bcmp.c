@@ -83,6 +83,11 @@ int getNumberFromStdin() { /* Receiving an integer (and only an integer) from th
         }
     }
 
+    if (strlen(str) > MAX_ACCEPTABLE_CHARACTERS) {
+        printf("ERROR: Too many characters, program will exceed assumed bounds (512)\n");
+        exit(0);
+    }
+
     return strtol(str, &trash, DECIMAL_BASE); /* converting the string to an integer in base 10 and returning it */
 }
 

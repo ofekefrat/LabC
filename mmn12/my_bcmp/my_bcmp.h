@@ -3,6 +3,7 @@
 
 #define STR_MAX_LENGTH 512 /*max length of string from input*/
 #define INT_MAX_LENGTH 5 /*value used for testing int input*/
+#define MAX_ACCEPTABLE_CHARACTERS 3 /*value used for testing int input*/
 #define DECIMAL_BASE 10
 #define POSITIVE_RESULT 0 /*value to be returned in case of positive result*/
 #define NEGATIVE_RESULT (-1) /*value to be returned in case of a negative result*/
