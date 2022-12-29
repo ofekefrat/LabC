@@ -1,29 +1,17 @@
 //
 // Created by ofeke on 30/11/2022.
 //
-
+#include "set.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 
 int main() {
-    char str[5];
-    char *trash;
-    int i,x;
-
-    if (fgets(str, 5, stdin) == NULL)
-        printf("Number is too long. maximum length is 512");
-
-    printf("%llu\n", strlen(str));
-    for (i=0; i<strlen(str);i++) {
-        printf("%c", str[i]);
+    unsigned long long two = 1<<1;
+    unsigned long long x = (two & (unsigned long long) 1<<33);
+    if (x & (unsigned long long) 1<<33) {
+        printf("1\n");
     }
-    for (i=0; i<strlen(str)-1; i++) {
-        if (!isdigit(str[i])) {
-            printf("Non-digit entered\n");
-        }
-    }
-
-    printf("%ld", strtol(str, &trash, 10)+1);
+    printf("%llu", x);
 }
