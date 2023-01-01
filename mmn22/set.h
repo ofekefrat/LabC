@@ -26,7 +26,7 @@ typedef struct set* pSet;
 void emptySet(pSet);
 void addMember(pSet,int);
 
-int getSetName();
+int setCaller(char*,int);
 void redefine(pSet);
 void print(pSet);
 void unionize(pSet);

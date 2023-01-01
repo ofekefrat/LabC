@@ -15,7 +15,11 @@ int main() {
         printf("\nPlease enter your command:\n");
         r = scanf("%s", str);
 
-        if (strcmp(str, "stop") == 0) {
+        if (str[strlen(str)-1] == ',') {
+            printf("Illegal comma\n");
+        }
+
+        else if (strcmp(str, "stop") == 0) {
             printf("Stopping..");
             exit(0);
         }
@@ -55,26 +59,52 @@ int main() {
     return 0;
 }
 
-int getSetName() {
+int setCaller(char* str, int endOfCommand) {
     int choice;
-    char name[5];
-    int r=scanf(" %s", name);
-    if (r!=1 || strlen(name) < 4) {
+
+    if (strlen(str) == 1 && str[0] == ',') {
+        printf("Multiple consecutive commas\n");
+        return -1;
+    }
+
+    if (strlen(str) < 4) {
         printf("Undefined set name\n");
         return -1;
     }
-    choice = name[3] - 'A';
-    if (name[0] != 'S' || name[1] != 'E' || name[2] != 'T' || choice < 0 || choice > 5) {
+
+    if (endOfCommand) {
+        if (strlen(str) > 4) {
+            printf("Extraneous text after end of command\n");
+            return -1;
+        }
+    }
+    else {
+        if (strlen(str) > 5) {
+            printf("Undefined set name\n");
+            return -1;
+        }
+    }
+
+    choice = str[3] - 'A';
+    if (str[0] != 'S' || str[1] != 'E' || str[2] != 'T' || choice < 0 || choice > 5) {
         printf("Undefined set name\n");
         return -1;
     }
+
+    if (!endOfCommand && strlen(str) < 5) {
+        printf("Missing comma\n");
+        return -1;
+    }
+
     return choice;
 }
 
 void redefine(pSet setArr) {
-    int choice, num, i, negative=0;
-    choice = getSetName();
-    if (choice == -1) return;
+    int targetInd, num, i, negative=0;
+    char targetSet[6];
+    scanf(" %s", targetSet);
+    targetInd = setCaller(targetSet, 1);
+    if (targetInd == -1) return;
 
     set tempSet;
     emptySet(&tempSet);
@@ -82,7 +112,7 @@ void redefine(pSet setArr) {
     char buf[999];
     fgets(buf, 999, stdin);
 
-    emptySet(&setArr[choice]);
+    emptySet(&setArr[targetInd]);
     char* token = strtok(buf, ", ");
 
     while(token != NULL) {
@@ -93,7 +123,7 @@ void redefine(pSet setArr) {
             }
             if (!negative && token[0] == '-')
                 negative = 1;
-            else if (token[i] < '0' || token[i] > '9') {
+            else if (token[i] < '0' || token[i] > '9' || token[i] == '\0') {
                 printf("Invalid set member - not an integer\n");
                 return;
             }
@@ -117,26 +147,25 @@ void redefine(pSet setArr) {
     }
 
     for (i=0; i < SECTIONS; i++) {
-        setArr[choice].sections[i].val = tempSet.sections[i].val;
+        setArr[targetInd].sections[i].val = tempSet.sections[i].val;
     }
 }
 
 void print(pSet setArr) {
-    int choice, counter=0, i, j;
-    choice = getSetName();
-    if (choice == -1) return;
-
-    char buf[999];
-    fgets(buf, 999, stdin);
+    int targetInd, counter=0, i, j;
+    char targetSet[5];
+    scanf(" %s", targetSet);
+    targetInd = setCaller(targetSet,1);
+    if (targetInd == -1) return;
 
     for (i=0; i < SECTIONS; i++) {
-        if (setArr[choice].sections[i].val > 0) {
+        if (setArr[targetInd].sections[i].val > 0) {
             for (j=0; j < SECTION_SIZE; j++) {
                 if (counter != 0 && counter % LINE_PRINT_LENGTH == 0)
                     printf("\n");
-                if (setArr[choice].sections[i].val & (unsigned long long) 1 << j) {
+                if (setArr[targetInd].sections[i].val & (unsigned long long) 1 << j) {
                     if (counter == 0) {
-                        printf("SET%c = { ", ('A' + choice));
+                        printf("SET%c = { ", ('A' + targetInd));
                     }
                     printf("%d ", j + i*SECTION_SIZE);
                     counter++;
@@ -152,69 +181,66 @@ void print(pSet setArr) {
 }
 
 void unionize(pSet setArr) {
-    int i, setInd1, setInd2, setInd3;
-    if ((setInd1 = getSetName()) == -1) return;
-    if ((setInd2 = getSetName()) == -1) return;
-    if ((setInd3 = getSetName()) == -1) return;
+    int i, set1Ind, set2Ind, targetInd;
+    char set1[6], set2[6], target[5];
+//    char line[20];
+//    fgets(line, 20, stdin);
+    if ((set1Ind = setCaller(set1,0)) == -1) return;
+    if ((set2Ind = setCaller(set2,0)) == -1) return;
+    if ((targetInd = setCaller(target,1)) == -1) return;
 
-    char buf[999];
-    fgets(buf, 999, stdin);
-
-    if (setInd1 != setInd3 && setInd2 != setInd3)
-        emptySet(&setArr[setInd3]);
+    if (set1Ind != targetInd && set2Ind != targetInd)
+        emptySet(&setArr[targetInd]);
 
     for (i=0; i < SECTIONS; i++) {
-        setArr[setInd3].sections[i].val = (setArr[setInd1].sections[i].val | setArr[setInd2].sections[i].val);
+        setArr[targetInd].sections[i].val = (setArr[set1Ind].sections[i].val | setArr[set2Ind].sections[i].val);
     }
 }
 
 void intersect(pSet setArr) {
-    int i, setInd1, setInd2, setInd3;
-    if ((setInd1 = getSetName()) == -1) return;
-    if ((setInd2 = getSetName()) == -1) return;
-    if ((setInd3 = getSetName()) == -1) return;
+    char set1[6], set2[6], target[5];
+    int i, set1Ind, set2Ind, targetInd;
+    scanf(" %s %s %s", set1, set2, target);
+    if ((set1Ind = setCaller(set1,0)) == -1) return;
+    if ((set2Ind = setCaller(set2,0)) == -1) return;
+    if ((targetInd = setCaller(target,1)) == -1) return;
 
-    char buf[999];
-    fgets(buf, 999, stdin);
-
-    if (setInd1 != setInd3 && setInd2 != setInd3)
-        emptySet(&setArr[setInd3]);
+    if (set1Ind != targetInd && set2Ind != targetInd)
+        emptySet(&setArr[targetInd]);
 
     for (i=0; i < SECTIONS; i++) {
-        setArr[setInd3].sections[i].val = setArr[setInd1].sections[i].val & setArr[setInd2].sections[i].val;
+        setArr[targetInd].sections[i].val = setArr[set1Ind].sections[i].val & setArr[set2Ind].sections[i].val;
     }
 }
 
 void subset(pSet setArr) {
-    int i, setInd1, setInd2, setInd3;
-    if ((setInd1 = getSetName()) == -1) return;
-    if ((setInd2 = getSetName()) == -1) return;
-    if ((setInd3 = getSetName()) == -1) return;
+    int i, set1Ind, set2Ind, targetInd;
+    char set1[6], set2[6], target[5];
+    scanf(" %s %s %s", set1, set2, target);
+    if ((set1Ind = setCaller(set1,0)) == -1) return;
+    if ((set2Ind = setCaller(set2,0)) == -1) return;
+    if ((targetInd = setCaller(target,1)) == -1) return;
 
-    char buf[999];
-    fgets(buf, 999, stdin);
-
-    if (setInd1 != setInd3 && setInd2 != setInd3)
-        emptySet(&setArr[setInd3]);
+    if (set1Ind != targetInd && set2Ind != targetInd)
+        emptySet(&setArr[targetInd]);
 
     for (i=0; i < SECTIONS; i++) {
-        setArr[setInd3].sections[i].val = setArr[setInd1].sections[i].val & ~setArr[setInd2].sections[i].val;
+        setArr[targetInd].sections[i].val = setArr[set1Ind].sections[i].val & ~setArr[set2Ind].sections[i].val;
     }
 }
 
 void symmetricDiff(pSet setArr) {
-    int i, setInd1, setInd2, setInd3;
-    if ((setInd1 = getSetName()) == -1) return;
-    if ((setInd2 = getSetName()) == -1) return;
-    if ((setInd3 = getSetName()) == -1) return;
+    int i, set1Ind, set2Ind, targetInd;
+    char set1[6], set2[6], target[5];
+    scanf(" %s %s %s", set1, set2, target);
+    if ((set1Ind = setCaller(set1,0)) == -1) return;
+    if ((set2Ind = setCaller(set2,0)) == -1) return;
+    if ((targetInd = setCaller(target,1)) == -1) return;
 
-    char buf[999];
-    fgets(buf, 999, stdin);
-
-    if (setInd1 != setInd3 && setInd2 != setInd3)
-        emptySet(&setArr[setInd3]);
+    if (set1Ind != targetInd && set2Ind != targetInd)
+        emptySet(&setArr[targetInd]);
 
     for (i = 0; i < SECTIONS; i++) {
-        setArr[setInd3].sections[i].val = (setArr[setInd1].sections[i].val ^ setArr[setInd2].sections[i].val);
+        setArr[targetInd].sections[i].val = (setArr[set1Ind].sections[i].val ^ setArr[set2Ind].sections[i].val);
     }
 }
