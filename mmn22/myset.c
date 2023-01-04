@@ -13,7 +13,8 @@ int main() {
         emptySet(&sets[i]);
     }
 
-    while (c != EOF) {
+    printf("Please enter your command:\n");
+    while (fgets(line, INPUT_LINE_MAX_LENGTH, stdin)) {
 
         memset(word, 0, sizeof(word));
         i=0;
@@ -23,9 +24,6 @@ int main() {
         fflush(stdin);
         freopen("input.exe", "w+", input);
 
-        printf("\nPlease enter your command:\n");
-
-        fgets(line, INPUT_LINE_MAX_LENGTH, stdin);
         fprintf(input, "%s", line);
         rewind(input);
 
@@ -95,6 +93,8 @@ int main() {
         }
         else
             printf("Undefined command name\n");
+
+        printf("\nPlease enter your command:\n");
     }
     printf("\nERROR: EOF received\n");
     fclose(input);
