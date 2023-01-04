@@ -204,7 +204,7 @@ void readLine(int* indexes, FILE* input) {
     int final=0;
 
     while (!final) {
-        if (counter == COMMON_ARG_AMOUNT) final=1;
+        if (counter == COMMON_ARG_AMOUNT-1) final=1;
         indexes[counter] = getSetName(final, input);
 
         if (indexes[counter] == ERROR) {
