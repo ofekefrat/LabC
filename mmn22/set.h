@@ -7,8 +7,8 @@
 
 #define MAX_NUM 127
 #define NUM_MAX_LENGTH 4
-#define SECTIONS 2
-#define SECTION_SIZE 64
+#define SECTIONS 4
+#define SECTION_SIZE 32
 #define NUM_OF_SETS 6
 #define DECIMAL_BASE 10
 #define LINE_PRINT_LENGTH 16
@@ -19,11 +19,11 @@
 
 /* STRUCTURES */
 typedef struct section {
-    unsigned long long val : 64;
+    unsigned long val : SECTION_SIZE;
 }section;
 
 typedef struct set {
-    section sections[2];
+    section sections[SECTIONS];
 }set;
 
 /* METHODS */
@@ -41,4 +41,5 @@ void intersect_set(pSet,pSet,pSet);
 void sub_set(pSet,pSet,pSet);
 void symdiff_set(pSet,pSet,pSet);
 void actuallyPrint(pSet);
-#endif //SET_H
+
+#endif /*SET_H*/
