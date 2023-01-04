@@ -39,5 +39,5 @@ void union_set(pSet,pSet,pSet);
 void intersect_set(pSet,pSet,pSet);
 void sub_set(pSet,pSet,pSet);
 void symdiff_set(pSet,pSet,pSet);
-
+void actuallyPrint(pSet);
 #endif //SET_H

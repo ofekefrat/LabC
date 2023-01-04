@@ -12,26 +12,14 @@ void addMember(pSet target, int num) {
 void print_set(pSet targetSet, int* nums) {
     int counter=0, i, j;
 
-    for (i=0; i < SECTIONS; i++) {
-        if (targetSet->sections[i].val > 0) {
-            for (j=0; j < SECTION_SIZE; j++) {
-//                if (counter != 0 && counter % LINE_PRINT_LENGTH == 0)
-//                    printf("\n");
-                if (targetSet->sections[i].val & (unsigned long long) 1 << j) {
-//                    if (counter == 0) {
-//                        printf("\n{ ");
-//                    }
-//                    printf("%d ", j + i*SECTION_SIZE);
-                    counter++;
-                }
-            }
-        }
-    }
+    for (i=0; i < SECTIONS; i++)
+        if (targetSet->sections[i].val > 0)
+            for (j=0; j < SECTION_SIZE; j++)
+                if (targetSet->sections[i].val & (unsigned long long) 1 << j)
+                    nums[counter++] = j + i*SECTION_SIZE;
 
     if (counter == 0)
-        printf("The set is empty\n");
-    else
-        printf("}\n");
+        nums[0] = -1;
 }
 
 void read_set(pSet targetSet, pSet temp) {

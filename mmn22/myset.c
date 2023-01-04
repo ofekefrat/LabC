@@ -2,7 +2,7 @@
 
 int main() {
 
-    int c=0, count, i, target, members[MAX_NUM], ind[COMMON_ARG_AMOUNT];
+    int c=0, i, target, ind[COMMON_ARG_AMOUNT];
     char word[COMMAND_MAX_LENGTH];
     set temp, sets[NUM_OF_SETS];
     pSet s1, s2, targetSet;
@@ -15,27 +15,27 @@ int main() {
     while (c != EOF) {
 
         memset(word, 0, sizeof(word));
-        memset(members, 0, sizeof(members));
-        count=0;
+        i=0;
         s1=NULL;
         s2=NULL;
         targetSet=NULL;
+        fflush(stdin);
 
         printf("\nPlease enter your command:\n");
-        while ((c = getchar()) != '\n' && c != EOF && count < COMMAND_MAX_LENGTH) {
+        while ((c = getchar()) != '\n' && c != EOF && i < COMMAND_MAX_LENGTH) {
             if (c == ' ' || c == '\t') {
-                if (word[0] != '\0') break;
+                if (word[0] != 0) break;
             }
             else {
-                word[count++] = (char) c;
+                word[i++] = (char) c;
             }
         }
 
-        if (count == 0) {
+        if (i == 0) {
             printf("Nothing entered\n");
         }
 
-        else if (word[count-1] == ',') {
+        else if (word[i-1] == ',') {
             printf("Illegal comma\n");
         }
 
@@ -49,7 +49,7 @@ int main() {
         }
 
         else if (strcmp(word, "read_set") == 0) {
-            if ((target = getSetName(0)) == -1) break;
+            if ((target = getSetName(0)) == -1) continue;
             targetSet = &sets[target];
 
             getSetMembers(&temp);
@@ -59,18 +59,17 @@ int main() {
         }
 
         else if (strcmp(word, "print_set") == 0) {
-            if ((target = getSetName(1)) == -1) break;
+            if ((target = getSetName(1)) == -1) continue;
             targetSet = &sets[target];
 
-            print_set(targetSet, members);
-
+            actuallyPrint(targetSet);
         }
 
         else if (strcmp(word, "union_set") == 0 || strcmp(word, "intersect_set") == 0
                 || strcmp(word, "sub_set") == 0 || strcmp(word, "symdiff_set") == 0) {
 
             readLine(ind);
-            if (ind[0] == -1) break;
+            if (ind[0] == -1) continue;
 
             s1 = &sets[ind[0]];
             s2 = &sets[ind[1]];
@@ -87,7 +86,6 @@ int main() {
         else
             printf("Undefined command name\n");
 
-        fflush(stdin);
     }
 
     printf("\nERROR: EOF received\n");
@@ -107,7 +105,7 @@ void getSetMembers(pSet temp) {
 
         while ((ch = getchar()) != ',' && ch != '\n' && i < NUM_MAX_LENGTH) {
             if (ch == ' ' || ch == '\t') {
-                if (!(digits[0] == '-' && digits[1] == '1') && digits[0] != '\0') { /* not -1 */
+                if (!(digits[0] == '-' && digits[1] == '1') && i != 0) { /* not -1 */
                     printf("Missing comma\n");
                     return;
                 }
@@ -119,6 +117,10 @@ void getSetMembers(pSet temp) {
             else {
                 digits[i++] = (char) ch;
             }
+        }
+        if (i == 0 && ch == ',') {
+            printf("Multiple consecutive commas\n");
+            return;
         }
         num = strtol(digits, NULL, DECIMAL_BASE);
 
@@ -143,7 +145,7 @@ int getSetName(int final) {
 
     while ((ch = getchar()) != ',' && ch != '\n' && i < SET_NAME_MAX_LENGTH) {
         if (ch == ' ' || ch == '\t') {
-            if (!final && setName[0] != '\0') {
+            if (!final && i != 0) {
                 printf("Missing comma\n");
                 return -1;
             }
@@ -156,12 +158,11 @@ int getSetName(int final) {
     if (ch == '\n') last=1;
 
     if (i == 0) {
-        printf("No operators entered\n");
-        return -1;
-    }
+        if (ch == ',')
+            printf("Multiple consecutive commas\n");
+        else
+            printf("No operators entered\n");
 
-    if (setName[0] == ',') {
-        printf("Multiple consecutive commas\n");
         return -1;
     }
 
@@ -203,4 +204,24 @@ void readLine(int* indexes) {
         }
         counter++;
     }
+}
+
+void actuallyPrint(pSet targetSet) {
+    int i, nums[MAX_NUM];
+    memset(nums, 0, sizeof(nums));
+
+    print_set(targetSet, nums);
+    if (nums[0] == -1) {
+        printf("The set is empty\n");
+        return;
+    }
+
+    printf("\n{ %d ", nums[0]);
+    for (i = 1; i < MAX_NUM && nums[i] != 0; i++) {
+        if (i != 0 && i % LINE_PRINT_LENGTH == 0)
+            printf("\n");
+
+        printf("%d ", nums[i]);
+    }
+    printf("}\n");
 }
