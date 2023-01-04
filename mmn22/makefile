@@ -1,10 +1,10 @@
+CC = gcc
 CFLAGS = -ansi -Wall -pedantic
+DEPS = set.h
+OBJ = myset.o set.o
 
-myset: myset.o set.o
-	gcc $(CFLAGS) myset.o -o myset
+%.o:  %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-myset.o: myset.c set.h
-	gcc $(CFLAGS) -c myset.c
-
-set.o: set.c set.h
-	gcc $(CFLAGS) -c set.c
+myset: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
