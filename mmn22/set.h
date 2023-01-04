@@ -19,7 +19,7 @@
 
 /* STRUCTURES */
 typedef struct section {
-    unsigned long val : SECTION_SIZE;
+    unsigned long value : SECTION_SIZE;
 }section;
 
 typedef struct set {
