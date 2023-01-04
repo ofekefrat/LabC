@@ -2,7 +2,7 @@
 
 int main() {
 
-    int c=0, i, target, ind[COMMON_ARG_AMOUNT];
+    int c, i, target, ind[COMMON_ARG_AMOUNT];
     char word[COMMAND_MAX_LENGTH], line[INPUT_LINE_MAX_LENGTH];
     set temp, sets[NUM_OF_SETS];
     pSet s1, s2, targetSet;
@@ -39,15 +39,15 @@ int main() {
         }
 
         if (i == 0) {
-            printf("Nothing entered\n");
+            printf("ERROR: Nothing entered\n");
         }
 
         else if (word[i-1] == ',') {
-            printf("Illegal comma\n");
+            printf("ERROR: Illegal comma\n");
         }
 
         else if (strlen(word) > 13) {
-            printf("Unknown command name\n");
+            printf("ERROR: Unknown command name\n");
         }
 
         else if (strcmp(word, "stop") == 0) {
@@ -57,7 +57,7 @@ int main() {
         }
 
         else if (strcmp(word, "read_set") == 0) {
-            if ((target = getSetName(0, input)) == -1) continue;
+            if ((target = getSetName(0, input)) == ERROR) continue;
             targetSet = &sets[target];
 
             getSetMembers(&temp, input);
@@ -67,7 +67,7 @@ int main() {
         }
 
         else if (strcmp(word, "print_set") == 0) {
-            if ((target = getSetName(1, input)) == -1) continue;
+            if ((target = getSetName(1, input)) == ERROR) continue;
             targetSet = &sets[target];
 
             actuallyPrint(targetSet);
@@ -77,7 +77,7 @@ int main() {
                 || strcmp(word, "sub_set") == 0 || strcmp(word, "symdiff_set") == 0) {
 
             readLine(ind, input);
-            if (ind[0] == -1) continue;
+            if (ind[0] == ERROR) continue;
 
             s1 = &sets[ind[0]];
             s2 = &sets[ind[1]];
@@ -92,7 +92,7 @@ int main() {
             else if (strcmp(word, "symdiff_set") == 0) symdiff_set(s1, s2, targetSet);
         }
         else
-            printf("Undefined command name\n");
+            printf("ERROR: Undefined command name\n");
 
         printf("\nPlease enter your command:\n");
     }
@@ -115,12 +115,12 @@ void getSetMembers(pSet temp, FILE* input) {
         while ((ch = fgetc(input)) != ',' && ch != '\n' && i < NUM_MAX_LENGTH) {
             if (ch == ' ' || ch == '\t') {
                 if (!(digits[0] == '-' && digits[1] == '1') && i != 0) { /* not -1 */
-                    printf("Missing comma\n");
+                    printf("ERROR: Missing comma\n");
                     return;
                 }
             }
             else if ((ch < '0' || ch > '9') && ch != '-') {
-                printf("Invalid set member - not an integer\n");
+                printf("ERROR: Invalid set member - not an integer\n");
                 return;
             }
             else {
@@ -128,18 +128,18 @@ void getSetMembers(pSet temp, FILE* input) {
             }
         }
         if (i == 0 && ch == ',') {
-            printf("Multiple consecutive commas\n");
+            printf("ERROR: Multiple consecutive commas\n");
             return;
         }
         num = strtol(digits, NULL, DECIMAL_BASE);
 
-        if (num == -1) break;
+        if (num == ERROR) break;
         if (ch == '\n') {
-            printf("List of set members not terminated correctly\n");
+            printf("ERROR: List of set members not terminated correctly\n");
             return;
         }
         if (num < 0 || num > MAX_NUM) {
-            printf("Invalid set member - value out of range\n");
+            printf("ERROR: Invalid set member - value out of range\n");
             return;
         }
         addMember(temp, num);
@@ -155,8 +155,8 @@ int getSetName(int final, FILE* input) {
     while ((ch = fgetc(input)) != ',' && ch != '\n' && i < SET_NAME_MAX_LENGTH) {
         if (ch == ' ' || ch == '\t') {
             if (!final && i != 0) {
-                printf("Missing comma\n");
-                return -1;
+                printf("ERROR: Missing comma\n");
+                return ERROR;
             }
         }
         else {
@@ -168,32 +168,32 @@ int getSetName(int final, FILE* input) {
 
     if (i == 0) {
         if (ch == ',')
-            printf("Multiple consecutive commas\n");
+            printf("ERROR: Multiple consecutive commas\n");
         else
-            printf("No operators entered\n");
+            printf("ERROR: No operators entered\n");
 
-        return -1;
+        return ERROR;
     }
 
     if (strlen(setName) != 4) {
-        printf("Undefined set name\n");
-        return -1;
+        printf("ERROR: Undefined set name\n");
+        return ERROR;
     }
 
     index = setName[3] - 'A';
     if (setName[0] != 'S' || setName[1] != 'E' || setName[2] != 'T' || index < 0 || index > 5) {
-        printf("Undefined set name\n");
-        return -1;
+        printf("ERROR: Undefined set name\n");
+        return ERROR;
     }
 
     if (final && !last) {
-        printf("Extraneous text after end of command\n");
-        return -1;
+        printf("ERROR: Extraneous text after end of command\n");
+        return ERROR;
     }
 
     if (last && !final) {
-        printf("Missing parameter\n");
-        return -1;
+        printf("ERROR: Missing parameter\n");
+        return ERROR;
     }
 
     return index;
@@ -204,11 +204,11 @@ void readLine(int* indexes, FILE* input) {
     int final=0;
 
     while (!final) {
-        if (counter == COMMON_ARG_AMOUNT-1) final=1;
+        if (counter == COMMON_ARG_AMOUNT) final=1;
         indexes[counter] = getSetName(final, input);
 
-        if (indexes[counter] == -1) {
-            indexes[0] = -1;
+        if (indexes[counter] == ERROR) {
+            indexes[0] = ERROR;
             break;
         }
         counter++;
@@ -220,7 +220,7 @@ void actuallyPrint(pSet targetSet) {
     memset(nums, 0, sizeof(nums));
 
     print_set(targetSet, nums);
-    if (nums[0] == -1) {
+    if (nums[0] == ERROR) {
         printf("The set is empty\n");
         return;
     }

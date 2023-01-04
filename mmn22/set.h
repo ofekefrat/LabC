@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define ERROR (-1)
 #define MAX_NUM 127
 #define NUM_MAX_LENGTH 4
 #define SECTIONS 8
