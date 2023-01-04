@@ -15,6 +15,7 @@
 #define COMMON_ARG_AMOUNT 3
 #define COMMAND_MAX_LENGTH 15
 #define SET_NAME_MAX_LENGTH 5
+#define INPUT_LINE_MAX_LENGTH 666
 
 /* STRUCTURES */
 typedef struct section {
@@ -30,9 +31,9 @@ typedef struct set* pSet;
 void emptySet(pSet);
 void addMember(pSet,int);
 
-int getSetName(int);
-void getSetMembers(pSet);
-void readLine(int*);
+int getSetName(int,FILE*);
+void getSetMembers(pSet,FILE*);
+void readLine(int*,FILE*);
 void read_set(pSet,pSet);
 void print_set(pSet,int*);
 void union_set(pSet,pSet,pSet);

@@ -3,9 +3,10 @@
 int main() {
 
     int c=0, i, target, ind[COMMON_ARG_AMOUNT];
-    char word[COMMAND_MAX_LENGTH];
+    char word[COMMAND_MAX_LENGTH], line[INPUT_LINE_MAX_LENGTH];
     set temp, sets[NUM_OF_SETS];
     pSet s1, s2, targetSet;
+    FILE *input = fopen("input.txt", "w+");
 
 
     for (i=0; i<NUM_OF_SETS; i++) {
@@ -20,9 +21,17 @@ int main() {
         s2=NULL;
         targetSet=NULL;
         fflush(stdin);
+        freopen("input.exe", "w+", input);
 
         printf("\nPlease enter your command:\n");
-        while ((c = getchar()) != '\n' && c != EOF && i < COMMAND_MAX_LENGTH) {
+
+        fgets(line, INPUT_LINE_MAX_LENGTH, stdin);
+        fprintf(input, "%s", line);
+        rewind(input);
+
+        printf("\nYou've entered: %s",line);
+
+        while ((c = fgetc(input)) != '\n' && c != EOF && i < COMMAND_MAX_LENGTH) {
             if (c == ' ' || c == '\t') {
                 if (word[0] != 0) break;
             }
@@ -45,21 +54,22 @@ int main() {
 
         else if (strcmp(word, "stop") == 0) {
             printf("Stopping..");
+            fclose(input);
             exit(0);
         }
 
         else if (strcmp(word, "read_set") == 0) {
-            if ((target = getSetName(0)) == -1) continue;
+            if ((target = getSetName(0, input)) == -1) continue;
             targetSet = &sets[target];
 
-            getSetMembers(&temp);
+            getSetMembers(&temp, input);
             read_set(targetSet, &temp);
 
             emptySet(&temp);
         }
 
         else if (strcmp(word, "print_set") == 0) {
-            if ((target = getSetName(1)) == -1) continue;
+            if ((target = getSetName(1, input)) == -1) continue;
             targetSet = &sets[target];
 
             actuallyPrint(targetSet);
@@ -68,7 +78,7 @@ int main() {
         else if (strcmp(word, "union_set") == 0 || strcmp(word, "intersect_set") == 0
                 || strcmp(word, "sub_set") == 0 || strcmp(word, "symdiff_set") == 0) {
 
-            readLine(ind);
+            readLine(ind, input);
             if (ind[0] == -1) continue;
 
             s1 = &sets[ind[0]];
@@ -85,15 +95,14 @@ int main() {
         }
         else
             printf("Undefined command name\n");
-
     }
-
     printf("\nERROR: EOF received\n");
+    fclose(input);
 
     return 0;
 }
 
-void getSetMembers(pSet temp) {
+void getSetMembers(pSet temp, FILE* input) {
     char digits[NUM_MAX_LENGTH];
     int i, ch, num;
     emptySet(temp);
@@ -103,7 +112,7 @@ void getSetMembers(pSet temp) {
         memset(digits, 0, sizeof(digits));
         i=0;
 
-        while ((ch = getchar()) != ',' && ch != '\n' && i < NUM_MAX_LENGTH) {
+        while ((ch = fgetc(input)) != ',' && ch != '\n' && i < NUM_MAX_LENGTH) {
             if (ch == ' ' || ch == '\t') {
                 if (!(digits[0] == '-' && digits[1] == '1') && i != 0) { /* not -1 */
                     printf("Missing comma\n");
@@ -137,13 +146,13 @@ void getSetMembers(pSet temp) {
     }
 }
 
-int getSetName(int final) {
+int getSetName(int final, FILE* input) {
     int index, ch, i=0, last=0;
     char setName[SET_NAME_MAX_LENGTH];
 
     memset(setName, 0, sizeof(setName));
 
-    while ((ch = getchar()) != ',' && ch != '\n' && i < SET_NAME_MAX_LENGTH) {
+    while ((ch = fgetc(input)) != ',' && ch != '\n' && i < SET_NAME_MAX_LENGTH) {
         if (ch == ' ' || ch == '\t') {
             if (!final && i != 0) {
                 printf("Missing comma\n");
@@ -190,13 +199,13 @@ int getSetName(int final) {
     return index;
 }
 
-void readLine(int* indexes) {
+void readLine(int* indexes, FILE* input) {
     int counter=0;
     int final=0;
 
     while (!final) {
         if (counter == COMMON_ARG_AMOUNT-1) final=1;
-        indexes[counter] = getSetName(final);
+        indexes[counter] = getSetName(final, input);
 
         if (indexes[counter] == -1) {
             indexes[0] = -1;
