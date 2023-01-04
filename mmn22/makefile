@@ -1,4 +1,4 @@
-CFLAGS = -ansi -wall -pedantic
+CFLAGS = -ansi -Wall -pedantic
 
 myset: myset.o set.o
 	gcc $(CFLAGS) myset.o -o myset
