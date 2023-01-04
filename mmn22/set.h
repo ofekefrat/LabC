@@ -7,8 +7,8 @@
 
 #define MAX_NUM 127
 #define NUM_MAX_LENGTH 4
-#define SECTIONS 4
-#define SECTION_SIZE 32
+#define SECTIONS 8
+#define SECTION_SIZE 16
 #define NUM_OF_SETS 6
 #define DECIMAL_BASE 10
 #define LINE_PRINT_LENGTH 16
@@ -19,7 +19,7 @@
 
 /* STRUCTURES */
 typedef struct section {
-    unsigned long value : SECTION_SIZE;
+    unsigned int value : SECTION_SIZE;
 }section;
 
 typedef struct set {
