@@ -112,8 +112,11 @@ int main() {
                 else if (strcmp(command, "symdiff_set") == 0) symdiff_set(s1, s2, targetSet);
             }
         }
-        else
+
+        else {
             printf("ERROR: Undefined command name\n");
+            if (c != '\n') skipBadLine();
+        }
 
         printf("\nPlease enter your command:\n");
     }
