@@ -34,7 +34,7 @@ void print_set(pSet targetSet, int* nums) {
 void read_set(pSet targetSet, pSet temp) {
     int i;
     for (i=0; i < SECTIONS; i++)
-        targetSet->sections[0].value = temp->sections[0].value;
+        targetSet->sections[i].value = temp->sections[i].value;
 }
 
 /* union_set: method to perform the union operation on the two sets pointed to by the first two arguments,
