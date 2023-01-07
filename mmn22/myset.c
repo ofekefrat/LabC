@@ -148,7 +148,7 @@ void getSetMembers(pSet temp, FILE* input) {
 
     /* ch: buffer reader for fgetc()
      * num: variable to store the new group member or the terminator -1*/
-    int i, ch, num;
+    int i, ch, num, endOfNumFlag;
     emptySet(temp);
 
     while(1) {
@@ -156,13 +156,12 @@ void getSetMembers(pSet temp, FILE* input) {
         /* reset what's necessary */
         memset(digits, 0, sizeof(digits));
         i=0;
+        endOfNumFlag=0;
 
         while ((ch = fgetc(input)) != ',' && ch != '\n' && i < NUM_MAX_LENGTH) {
             if (ch == ' ' || ch == '\t') {
-                if (!(digits[0] == '-' && digits[1] == '1') && i != 0) { /* not -1 */
-                    printf("ERROR: Missing comma\n");
-                    skipBadLine();
-                    return;
+                if (!(digits[0] == '-' && digits[1] == '1') && i != 0 && !endOfNumFlag) { /* not -1 */
+                    endOfNumFlag=1;
                 }
             }
             else if ((ch < '0' || ch > '9') && !(ch == '-' && i == 0)) {
@@ -171,6 +170,11 @@ void getSetMembers(pSet temp, FILE* input) {
                 return;
             }
             else {
+                if (endOfNumFlag) {
+                    printf("ERROR: Missing comma\n");
+                    skipBadLine();
+                    return;
+                }
                 digits[i++] = (char) ch;
             }
         }
@@ -202,20 +206,23 @@ void getSetMembers(pSet temp, FILE* input) {
  * and 1 if the word is the final word to be expected. If any problems are found, prints a detailed error message
  * and terminates the current operation, waiting for a new command.*/
 int getSetName(int final, FILE* input) {
-    int index, ch, i=0, last=0; /*last: indicator whether the loop was terminated by \n, making this the last set*/
+    int index, ch, i=0, last=0, endOfWordFlag=0; /*last: indicator whether the loop was terminated by \n, making this the last set*/
     char setName[SET_NAME_MAX_LENGTH]; /* setName[]: array to hold the input for processing */
 
     memset(setName, 0, sizeof(setName));
 
     while ((ch = fgetc(input)) != ',' && ch != '\n' && i < SET_NAME_MAX_LENGTH) {
         if (ch == ' ' || ch == '\t') {
-            if (!final && i != 0) {
+            if (!final && i != 0 && !endOfWordFlag) {
+                endOfWordFlag=1;
+            }
+        }
+        else {
+            if (endOfWordFlag) {
                 printf("ERROR: Missing comma\n");
                 skipBadLine();
                 return ERROR;
             }
-        }
-        else {
             setName[i++] = (char) ch;
         }
     }
