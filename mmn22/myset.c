@@ -44,7 +44,7 @@ int main() {
         freopen("input.exe", "w+", input);
 
         fprintf(input, "%s", line); /* pass the line to the processing file */
-        rewind(input); /*bring the cursor back the beginning to read the contents.*/
+        rewind(input); /*bring the cursor back to the beginning to read the contents.*/
 
         printf("\nYou've entered: %s",line);
 
@@ -73,7 +73,7 @@ int main() {
         }
 
         else if (strcmp(command, "stop") == 0) {
-            printf("Stopping..");
+            printf("Stopping..\n");
             fclose(input);
             exit(0);
         }
