@@ -38,6 +38,7 @@ int main() {
         /* reset everything command-related */
         memset(command, 0, sizeof(command));
         i=0;
+        target=0;
         s1=NULL;
         s2=NULL;
         targetSet=NULL;
@@ -84,6 +85,8 @@ int main() {
                 getSetMembers(&temp, input);
                 read_set(targetSet, &temp);
                 emptySet(&temp);
+                printf("New SET%c:", 'A' + target);
+                actuallyPrint(targetSet);
             }
         }
 
@@ -110,6 +113,8 @@ int main() {
                 else if (strcmp(command, "intersect_set") == 0) intersect_set(s1, s2, targetSet);
                 else if (strcmp(command, "sub_set") == 0) sub_set(s1, s2, targetSet);
                 else if (strcmp(command, "symdiff_set") == 0) symdiff_set(s1, s2, targetSet);
+                printf("New SET%c:\n", 'A' + target);
+                actuallyPrint(targetSet);
             }
         }
 
