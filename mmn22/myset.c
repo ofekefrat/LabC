@@ -134,8 +134,7 @@ int main() {
 
 /* skipBadLine: skips to the next line of the input if an error was found, so no leftover information is in the buffer*/
 void skipBadLine() {
-    char trash[INPUT_LINE_MAX_LENGTH];
-//    fgets(trash, INPUT_LINE_MAX_LENGTH, stdin);
+    printf("i aint skippin\n");
 }
 
 /* getSetMembers: method to help read_set receive all integers from the rest of the input buffer passed by the argument,
