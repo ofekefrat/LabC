@@ -26,7 +26,11 @@ int main() {
 
     /* input: file buffer, mainly implemented for the purpose of printing the line back to the user and still being
      * able to read it with getc, letter by letter.*/
-    FILE *input = fopen("input.txt", "w+");
+    FILE *input;
+    if ((input = fopen("input.txt", "w+")) == NULL) {
+        printf("Error opening input processing file\n");
+        exit(1);
+    }
 
     for (i=0; i<NUM_OF_SETS; i++) {
         emptySet(&sets[i]);
@@ -43,9 +47,12 @@ int main() {
         s2=NULL;
         targetSet=NULL;
         freopen("input.exe", "w+", input);
+        if (input == NULL) {
+            printf("Error opening input processing file\n");
+            exit(1);
+        }
 
         fprintf(input, "%s", line); /* pass the line to the processing file */
-
         rewind(input); /*bring the cursor back to the beginning to read the contents.*/
 
         printf("\nYou've entered: %s",line);
@@ -61,17 +68,14 @@ int main() {
 
         if (i == 0) { /* no valuable input has been entered (all white spaces) */
             printf("ERROR: Nothing entered\n");
-            skipBadLine();
         }
 
         else if (command[i - 1] == ',' || command[0] == ',') {
             printf("ERROR: Illegal comma\n");
-            if (c != '\n') skipBadLine();
         }
 
         else if (strlen(command) > COMMAND_MAX_LENGTH-2) {
             printf("ERROR: Unknown command name\n");
-            if (c != '\n') skipBadLine();
         }
 
         else if (strcmp(command, "stop") == 0) {
@@ -120,7 +124,6 @@ int main() {
 
         else {
             printf("ERROR: Undefined command name\n");
-            if (c != '\n') skipBadLine();
         }
 
         printf("\nPlease enter your command:\n");
@@ -130,11 +133,6 @@ int main() {
     fclose(input);
 
     return 0;
-}
-
-/* skipBadLine: skips to the next line of the input if an error was found, so no leftover information is in the buffer*/
-void skipBadLine() {
-    printf("i aint skippin\n");
 }
 
 /* getSetMembers: method to help read_set receive all integers from the rest of the input buffer passed by the argument,
@@ -166,13 +164,11 @@ void getSetMembers(pSet targetSet, pSet temp, FILE* input) {
             }
             else if ((ch < '0' || ch > '9') && !(ch == '-' && i == 0)) {
                 printf("ERROR: Invalid set member - not an integer\n");
-                skipBadLine();
                 return;
             }
             else {
                 if (endOfNumFlag) {
                     printf("ERROR: Missing comma\n");
-                    skipBadLine();
                     return;
                 }
                 digits[i++] = (char) ch;
@@ -181,7 +177,6 @@ void getSetMembers(pSet targetSet, pSet temp, FILE* input) {
 
         if (i == 0 && ch == ',') {
             printf("ERROR: Multiple consecutive commas\n");
-            skipBadLine();
             return;
         }
         num = strtol(digits, NULL, DECIMAL_BASE);
@@ -193,7 +188,6 @@ void getSetMembers(pSet targetSet, pSet temp, FILE* input) {
         }
         if (num < 0 || num > MAX_NUM) {
             printf("ERROR: Invalid set member - value out of range\n");
-            skipBadLine();
             return;
         }
         addMember(temp, num);
@@ -222,7 +216,6 @@ int getSetName(int final, FILE* input) {
         else {
             if (endOfWordFlag) {
                 printf("ERROR: Missing comma\n");
-                skipBadLine();
                 return ERROR;
             }
             setName[i++] = (char) ch;
@@ -234,7 +227,6 @@ int getSetName(int final, FILE* input) {
     if (i == 0) {
         if (ch == ',') {
             printf("ERROR: Multiple consecutive commas\n");
-            skipBadLine();
         }
         else {
             printf("ERROR: No operators entered\n");
@@ -245,7 +237,6 @@ int getSetName(int final, FILE* input) {
 
     if (strlen(setName) != SET_NAME_MAX_LENGTH-1) {
         printf("ERROR: Undefined set name\n");
-        if (!last) skipBadLine();
         return ERROR;
     }
 
@@ -257,7 +248,6 @@ int getSetName(int final, FILE* input) {
 
     if (final && !last) {
         printf("ERROR: Extraneous text after end of command\n");
-        skipBadLine();
         return ERROR;
     }
 

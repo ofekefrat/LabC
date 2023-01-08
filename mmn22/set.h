@@ -90,7 +90,4 @@ void symdiff_set(pSet,pSet,pSet);
  * If the set is empty, prints a message accordingly instead.*/
 void actuallyPrint(pSet);
 
-/* skipBadLine: skips to the next line of the input if an error was found, so no leftover information is in the buffer*/
-void skipBadLine(void);
-
 #endif /*SET_H*/
