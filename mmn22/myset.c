@@ -134,7 +134,8 @@ int main() {
 
 /* skipBadLine: skips to the next line of the input if an error was found, so no leftover information is in the buffer*/
 void skipBadLine() {
-    fgets(NULL, INPUT_LINE_MAX_LENGTH, stdin);
+    char trash[INPUT_LINE_MAX_LENGTH];
+    fgets(trash, INPUT_LINE_MAX_LENGTH, stdin);
 }
 
 /* getSetMembers: method to help read_set receive all integers from the rest of the input buffer passed by the argument,
@@ -206,7 +207,8 @@ void getSetMembers(pSet temp, FILE* input) {
  * and 1 if the word is the final word to be expected. If any problems are found, prints a detailed error message
  * and terminates the current operation, waiting for a new command.*/
 int getSetName(int final, FILE* input) {
-    int index, ch, i=0, last=0, endOfWordFlag=0; /*last: indicator whether the loop was terminated by \n, making this the last set*/
+    /*last: indicator whether the loop was terminated by \n, making this the last set*/
+    int index, ch, i=0, last=0, endOfWordFlag=0;
     char setName[SET_NAME_MAX_LENGTH]; /* setName[]: array to hold the input for processing */
 
     memset(setName, 0, sizeof(setName));
