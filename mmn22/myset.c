@@ -82,8 +82,7 @@ int main() {
         else if (strcmp(command, "read_set") == 0) {
             if ((target = getSetName(0, input)) != ERROR) {
                 targetSet = &sets[target];
-                getSetMembers(&temp, input);
-                read_set(targetSet, &temp);
+                getSetMembers(targetSet, &temp, input);
                 emptySet(&temp);
                 printf("New SET%c:", 'A' + target);
                 actuallyPrint(targetSet);
@@ -143,7 +142,7 @@ void skipBadLine() {
  * The method defines a temporary set to be copied from by read_set, and then sends it
  * on its way if everything is in order. If any problems are found, prints a detailed error message
  * and terminates the current operation, waiting for a new command.*/
-void getSetMembers(pSet temp, FILE* input) {
+void getSetMembers(pSet targetSet, pSet temp, FILE* input) {
     /* digits[]: an array to process each letter before turning it into a number*/
     char digits[NUM_MAX_LENGTH];
 
@@ -187,7 +186,7 @@ void getSetMembers(pSet temp, FILE* input) {
         }
         num = strtol(digits, NULL, DECIMAL_BASE);
 
-        if (num == ERROR) break;
+        if (num == -1) break;
         if (ch == '\n') {
             printf("ERROR: List of set members not terminated correctly\n");
             return;
@@ -199,6 +198,7 @@ void getSetMembers(pSet temp, FILE* input) {
         }
         addMember(temp, num);
     }
+    read_set(targetSet, temp);
 }
 
 /* getSetName: reads a word from the input buffer passed in the argument, expecting it to be a defined set name

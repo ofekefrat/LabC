@@ -32,6 +32,7 @@ void print_set(pSet targetSet, int* nums) {
 /* read_set: method to redefine the set pointed to by the first argument, with the members of the temporary set
  * passed by getSetMembers in the second argument.*/
 void read_set(pSet targetSet, pSet temp) {
+
     int i;
     for (i=0; i < SECTIONS; i++)
         targetSet->sections[i].value = temp->sections[i].value;

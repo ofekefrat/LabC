@@ -50,7 +50,7 @@ int getSetName(int,FILE*);
  * The method defines a temporary set to be copied from by read_set, and then sends it
  * on its way if everything is in order. If any problems are found, prints a detailed error message
  * and terminates the current operation, waiting for a new command.*/
-void getSetMembers(pSet,FILE*);
+void getSetMembers(pSet,pSet,FILE*);
 
 /* readLine: method to correctly read 3 set names from the input buffer passed by the argument,
  * for use in all basic set operation methods (union_set, intersect_set, sub_set and symdiff_set)
