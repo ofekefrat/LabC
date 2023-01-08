@@ -45,6 +45,7 @@ int main() {
         freopen("input.exe", "w+", input);
 
         fprintf(input, "%s", line); /* pass the line to the processing file */
+
         rewind(input); /*bring the cursor back to the beginning to read the contents.*/
 
         printf("\nYou've entered: %s",line);
@@ -134,7 +135,7 @@ int main() {
 /* skipBadLine: skips to the next line of the input if an error was found, so no leftover information is in the buffer*/
 void skipBadLine() {
     char trash[INPUT_LINE_MAX_LENGTH];
-    fgets(trash, INPUT_LINE_MAX_LENGTH, stdin);
+//    fgets(trash, INPUT_LINE_MAX_LENGTH, stdin);
 }
 
 /* getSetMembers: method to help read_set receive all integers from the rest of the input buffer passed by the argument,
