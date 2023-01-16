@@ -7,4 +7,4 @@
 
 #define EMPTY (-2)
 
-#endif //LABC_PERMUT_H
+#endif
