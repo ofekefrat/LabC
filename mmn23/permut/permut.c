@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 
-    rewind(input);
+    fseek(input, 0, SEEK_SET);
     word = (char*)calloc(len, sizeof(char));
     bank = (char*)calloc(len, sizeof(char));
 
