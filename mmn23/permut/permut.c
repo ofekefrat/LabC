@@ -5,9 +5,10 @@
 int main(int argc, char *argv[]) {
 
     int i, c, count=0, found=0;
-    char *word, *bank;
+    char *word, *bank, *path;
     size_t len;
     FILE* input;
+    path = argv[1];
 
     if (argc < 3) {
         printf("Not enough arguments! (2 required)\n");
@@ -20,15 +21,26 @@ int main(int argc, char *argv[]) {
     }
 
     len = strlen(argv[2]);
-    input = fopen(argv[1], "r");
+    input = fopen(path, "r");
 
-    if (!input) {
-        perror("could not open specified input file");
+    if (input == NULL) {
+        perror("_NULL_ could not open specified input file");
         exit(0);
     }
 
-    word = calloc(len, sizeof(char));
-    bank = calloc(len, sizeof(char));
+    if (feof(input)) {
+        perror("_FEOF_ could not open specified input file");
+        exit(0);
+    }
+
+    if (ferror(input)) {
+        perror("_FERROR_ could not open specified input file");
+        exit(0);
+    }
+
+    rewind(input);
+    word = (char*)calloc(len, sizeof(char));
+    bank = (char*)calloc(len, sizeof(char));
 
     strcpy(bank, argv[2]);
 
@@ -45,11 +57,7 @@ int main(int argc, char *argv[]) {
             memset(word, 0, len*sizeof(char));
             strcpy(bank, argv[2]);
             count=0;
-            while (c != ' ' && c != '\n') {
-                if (c == EOF) exit(0); /* temp */
-                c = fgetc(input);
-            }
-        }
+        } /* very very wasteful */
 
         if (count == len) { /* permutation found */
             if (!found) found=1;
@@ -60,6 +68,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    fclose(input);
     if (!found) printf("No permutations found!\n");
 
     return 0;
