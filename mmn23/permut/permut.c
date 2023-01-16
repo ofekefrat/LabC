@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        if (count == len+1) { /* permutation found */
+        if (count == len) { /* permutation found */
             if (!found) found=1;
             printf("%s\n", word);
             memset(word, 0, len*sizeof(char));
