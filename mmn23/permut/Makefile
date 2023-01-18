@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -ansi -Wall -pedantic
 DEPS = permut.h
-OBJ = permut.o
+OBJ = permut.o queue.o
 
 %.o:  %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

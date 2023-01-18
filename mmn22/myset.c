@@ -7,7 +7,7 @@
 
 int main() {
 
-    /* c: buffer reader for fgetc();
+    /* key: buffer reader for fgetc();
      * target: temporary index holder for simplicity;
      * ind[]: same as target, only for when multiple indexes are required.*/
     int c, i, target, ind[COMMON_ARG_AMOUNT];
@@ -89,7 +89,7 @@ int main() {
                 targetSet = &sets[target];
                 getSetMembers(targetSet, &temp, input);
                 emptySet(&temp);
-                printf("New SET%c:", 'A' + target);
+                printf("New SET%key:", 'A' + target);
                 actuallyPrint(targetSet);
             }
         }
@@ -117,7 +117,7 @@ int main() {
                 else if (strcmp(command, "intersect_set") == 0) intersect_set(s1, s2, targetSet);
                 else if (strcmp(command, "sub_set") == 0) sub_set(s1, s2, targetSet);
                 else if (strcmp(command, "symdiff_set") == 0) symdiff_set(s1, s2, targetSet);
-                printf("New SET%c:\n", 'A' + target);
+                printf("New SET%key:\n", 'A' + target);
                 actuallyPrint(targetSet);
             }
         }
