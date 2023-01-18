@@ -8,8 +8,6 @@ int main(int argc, char *argv[]) {
     FILE* input;
     pQueue pq = createQueue();
     int c, count=0, found=0;
-    char* path;
-    path = (char*)malloc(40);
 
     if (argc < REQ_ARG_COUNT) {
         printf("Not enough arguments! (2 required)\n");
@@ -22,21 +20,15 @@ int main(int argc, char *argv[]) {
     }
 
     len = strlen(argv[2]);
-    sprintf(path, "%s", ("~/CLionProjects/LabC/%s", argv[2])); /* remove */
-    input = fopen(path, "r");
+    input = fopen(argv[1], "r");
 
     if (input == NULL) {
-        perror("_NULL_ could not open specified input file");
+        perror("could not open specified input file");
         exit(0);
     }
 
     if (feof(input)) {
-        perror("_FEOF_ could not open specified input file");
-        exit(0);
-    }
-
-    if (ferror(input)) {
-        perror("_FERROR_ could not open specified input file");
+        printf("File is empty\n");
         exit(0);
     }
 
