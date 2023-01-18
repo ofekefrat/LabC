@@ -10,12 +10,12 @@ int main(int argc, char *argv[]) {
     FILE* input;
     path = argv[1];
 
-    if (argc < 3) {
+    if (argc < REQ_ARG_COUNT) {
         printf("Not enough arguments! (2 required)\n");
         exit(0);
     }
 
-    if (argc > 3) {
+    if (argc > REQ_ARG_COUNT) {
         printf("Excessive arguments! (2 required)\n");
         exit(0);
     }
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
             memset(word, 0, len*sizeof(char));
             strcpy(bank, argv[2]);
             count=0;
-        } /* very very wasteful */
+        } /* very, very wasteful */
 
         if (count == len) { /* permutation found */
             if (!found) found=1;
