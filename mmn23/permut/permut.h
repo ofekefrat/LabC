@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define REQ_ARG_COUNT 3
-#define EMPTY (-2)
+#define EMPTY 0;
 
 /* STRUCTS */
 
@@ -32,6 +32,6 @@ void enQueue(pQueue,char);
 void deQueue(pQueue);
 int isNodeInBank(pNode,char*);
 int isWordValid(pQueue,char*);
-void printWord(pQueue,size_t);
+void printWord(pQueue);
 
 #endif

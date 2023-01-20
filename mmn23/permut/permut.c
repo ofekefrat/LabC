@@ -5,7 +5,7 @@
 int main(int argc, char *argv[]) {
 
     size_t len;
-    FILE* input;
+//    FILE* input;
     pQueue pq = createQueue();
     int c, count=0, found=0;
 
@@ -20,21 +20,21 @@ int main(int argc, char *argv[]) {
     }
 
     len = strlen(argv[2]);
-    input = fopen(argv[1], "r");
+//    input = fopen(argv[1], "r");
+//
+//    if (input == NULL) {
+//        perror("could not open specified input file");
+//        exit(0);
+//    }
+//
+//    if (feof(input)) {
+//        printf("File is empty\n");
+//        exit(0);
+//    }
+//
+//    fseek(input, 0, SEEK_SET);
 
-    if (input == NULL) {
-        perror("could not open specified input file");
-        exit(0);
-    }
-
-    if (feof(input)) {
-        printf("File is empty\n");
-        exit(0);
-    }
-
-    fseek(input, 0, SEEK_SET);
-
-    while ((c = fgetc(input)) != EOF) {
+    while ((c = fgetc(stdin)) != '\n') { /* change \n */
         enQueue(pq, (char) c);
         count++;
 
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    fclose(input);
+//    fclose(input);
     if (!found) printf("No permutations found!\n");
 
     return 0;
@@ -52,10 +52,12 @@ int main(int argc, char *argv[]) {
 
 int isNodeInBank(pNode pn, char* bank) {
     int i;
+    size_t size = strlen(bank);
 
-    for (i=0; i < strlen(bank); i++) {
+    for (i=0; i < size; i++) {
         if (pn->key == bank[i]) {
-            bank[i] = EMPTY;
+            bank[i] = bank[size-1];
+            bank[size-1] = '\0';
             return 1;
         }
     }
@@ -68,8 +70,8 @@ int isWordValid(pQueue pq, char* bank) {
     size_t len = strlen(bank);
     char* tempBank;
 
-    currentNode = pq->rear;
-    tempBank = (char*) calloc(len, sizeof(char));
+    currentNode = pq->front;
+    tempBank = (char*) malloc(len*sizeof(char));
     if (tempBank == NULL) perror("tempBank failed to initialize\n");
     strcpy(tempBank, bank);
 
@@ -78,25 +80,18 @@ int isWordValid(pQueue pq, char* bank) {
         else return 0;
     }
 
-    printWord(pq,len);
-    free(tempBank);
+    printWord(pq);
+    if (tempBank != NULL) free(tempBank);
     return 1;
 }
 
-void printWord(pQueue pq, size_t len) {
+void printWord(pQueue pq) {
     pNode currentNode;
-    int i = (int) len-1;
-    char* printable;
-    printable = (char*) calloc(len, sizeof(char));
-    if (printable == NULL) perror("printable failed to initialize\n");
 
-    currentNode = pq->rear;
-
-    while (currentNode != NULL && i >= 0) {
-        printable[i--] = currentNode->key;
+    currentNode = pq->front;
+    while (currentNode != NULL) {
+        putchar(currentNode->key);
         currentNode = currentNode->next;
     }
-
-    printf("%s\n", printable);
-    free(printable);
+    putchar('\n');
 }
